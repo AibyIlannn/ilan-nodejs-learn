@@ -11,6 +11,54 @@ const sql = neon(process.env.DATABASE_URL);
 
 // static files
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
+
+function generateId(length = 5) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+app.get("/api/chats", async (req, res) => {
+  try {
+    const chats = await sql`
+      SELECT id, message, created_at
+      FROM chats
+      ORDER BY created_at ASC
+      LIMIT 100
+    `;
+    res.json(chats);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/api/chats", async (req, res) => {
+  try {
+    const { message } = req.body;
+
+    if (!message || message.trim() === "") {
+      return res.status(400).json({ error: "Message is required" });
+    }
+
+    const id = generateId(5);
+
+    await sql`
+      INSERT INTO chats (id, message)
+      VALUES (${id}, ${message})
+    `;
+
+    res.status(201).json({
+      id,
+      message
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // halaman utama
 app.get("/", (req, res) => {
