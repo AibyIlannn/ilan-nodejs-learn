@@ -55,6 +55,12 @@
     .chat-input button {
       padding: 8px 12px;
     }
+    
+    .chat-time {
+      font-size: 11px;
+      color: #666;
+      margin-top: 4px;
+    }
 
     footer {
       text-align: center;
@@ -99,57 +105,69 @@
     © 2026 Web by Ilan Al Iman
   </footer>
 
-  <script>
+<script>
   const chatBox = document.getElementById("chatBox");
   const chatInput = document.getElementById("chatInput");
 
-  // render chat bubble
-  function renderChat(message, type = "other") {
+  // generate & simpan user_id lokal
+  let userId = localStorage.getItem("user_id");
+  if (!userId) {
+    userId = Math.random().toString(36).substring(2, 8);
+    localStorage.setItem("user_id", userId);
+  }
+
+  function formatTime(time) {
+    const date = new Date(time);
+    return date.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+
+  function renderChat(message, time, isUser) {
     const div = document.createElement("div");
-    div.className = `chat ${type}`;
-    div.textContent = message;
+    div.className = `chat ${isUser ? "user" : "other"}`;
+
+    div.innerHTML = `
+      <div>${message}</div>
+      <div class="chat-time">${formatTime(time)}</div>
+    `;
+
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  // load chat dari database
   async function loadChats() {
-    try {
-      const res = await fetch("/api/chats");
-      const chats = await res.json();
-      chatBox.innerHTML = "";
+    const res = await fetch("/api/chats");
+    const chats = await res.json();
+    chatBox.innerHTML = "";
 
-      chats.forEach(chat => {
-        renderChat(chat.message, "other");
-      });
-    } catch (err) {
-      console.error("Gagal load chat", err);
-    }
+    chats.forEach(chat => {
+      renderChat(
+        chat.message,
+        chat.created_at,
+        chat.user_id === userId
+      );
+    });
   }
 
-  // kirim chat ke server
   async function sendChat() {
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // tampilkan langsung di UI (kanan)
-    renderChat(message, "user");
+    renderChat(message, new Date(), true);
     chatInput.value = "";
 
-    try {
-      await fetch("/api/chats", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message })
-      });
-    } catch (err) {
-      console.error("Gagal kirim chat", err);
-    }
+    await fetch("/api/chats", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message,
+        user_id: userId
+      })
+    });
   }
 
-  // load pertama kali
   loadChats();
 </script>
 

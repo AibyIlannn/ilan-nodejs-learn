@@ -38,23 +38,20 @@ app.get("/api/chats", async (req, res) => {
 
 app.post("/api/chats", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, user_id } = req.body;
 
-    if (!message || message.trim() === "") {
-      return res.status(400).json({ error: "Message is required" });
+    if (!message || !user_id) {
+      return res.status(400).json({ error: "Invalid data" });
     }
 
     const id = generateId(5);
 
     await sql`
-      INSERT INTO chats (id, message)
-      VALUES (${id}, ${message})
+      INSERT INTO chats (id, message, user_id)
+      VALUES (${id}, ${message}, ${user_id})
     `;
 
-    res.status(201).json({
-      id,
-      message
-    });
+    res.status(201).json({ id, message });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
