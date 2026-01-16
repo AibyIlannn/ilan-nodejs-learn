@@ -2,174 +2,676 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Home | Express Vercel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="description" content="Platform pembelajaran Node.js, PostgreSQL, dan Vercel oleh Ilan Al Iman. Proyek open source untuk belajar web development modern.">
+  <meta name="keywords" content="nodejs, postgresql, vercel, web development, learning platform">
+  <meta name="author" content="Ilan Al Iman">
+  <title>Learning Platform | Ilan Al Iman</title>
+  <link rel="icon" type="image/jpeg" href="/favicon.jpg">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts - Crimson Text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2C3E50;
+      --secondary: #ECF0F1;
+      --accent: #3498DB;
+      --text: #34495E;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Crimson Text', serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--secondary);
+    }
+
+    /* Desktop Navigation */
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 1.5rem;
+    }
+
+    nav h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
     }
 
     nav a {
-      margin-right: 8px;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Mobile Aside Navigation */
+    .mobile-aside {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--primary);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .mobile-aside.active {
+      left: 0;
+    }
+
+    .aside-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .aside-header h2 {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .mobile-aside ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+
+    .mobile-aside li {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .mobile-aside a:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      max-width: 800px;
+      font-size: 1.1rem;
+    }
+
+    a.link {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    a.link:hover {
+      border-bottom-color: var(--primary);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .grid-left {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .grid-left:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .grid-right {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-item {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .grid-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .grid-item h4, .grid-left h4 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+
+    .grid-item p, .grid-left p {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .chat-container {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .chat-section {
-      border: 1px solid #ccc;
-      height: 300px;
+      height: 400px;
       overflow-y: auto;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
     .chat {
       max-width: 70%;
-      margin-bottom: 8px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 14px;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      word-wrap: break-word;
     }
 
     .chat.user {
-      background: #DCF8C6;
+      background: var(--accent);
+      color: white;
       margin-left: auto;
       text-align: right;
+      border-bottom-right-radius: 4px;
     }
 
     .chat.other {
-      background: #f1f1f1;
+      background: var(--secondary);
+      color: var(--text);
       margin-right: auto;
       text-align: left;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-time {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
     }
 
     .chat-input {
       display: flex;
-      gap: 5px;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--secondary);
+      border-top: 1px solid #ddd;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 8px;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-family: 'Crimson Text', serif;
+      transition: border-color 0.3s ease;
+      cursor: text;
+    }
+
+    .chat-input input:focus {
+      outline: none;
+      border-color: var(--accent);
     }
 
     .chat-input button {
-      padding: 8px 12px;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-family: 'Crimson Text', serif;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    
-    .chat-time {
-      font-size: 11px;
-      color: #666;
-      margin-top: 4px;
+
+    .chat-input button:hover {
+      background-color: var(--primary);
+      transform: scale(1.02);
+    }
+
+    .chat-input button:active {
+      transform: scale(0.98);
     }
 
     footer {
       text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
+      padding: 2rem;
+      background-color: var(--primary);
+      color: white;
+      margin-top: 3rem;
+    }
+
+    footer p {
+      max-width: 100%;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      h3 {
+        font-size: 1.6rem;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-right {
+        grid-template-rows: auto auto;
+      }
+
+      .chat {
+        max-width: 85%;
+      }
+
+      .chat-section {
+        height: 300px;
+      }
+
+      .chat-input {
+        padding: 1rem;
+      }
+
+      .chat-input button {
+        padding: 0.75rem 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.9rem;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+      }
+
+      main {
+        padding: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .chat-input input {
+        font-size: 1rem;
+      }
+
+      .chat-input button {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/">Home</a> |
-    <a href="/about">About</a> |
-    <a href="/contact">Contact</a>
-  </nav>
+  <!-- Mobile Overlay -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
-  <hr>
+  <!-- Mobile Aside Navigation -->
+  <aside class="mobile-aside" id="mobileAside">
+    <div class="aside-header">
+      <h2><i class="fas fa-graduation-cap"></i> Ilan Learning</h2>
+      <button class="close-btn" onclick="closeMenu()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul>
+      <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </aside>
 
-  <h1>Welcome 👋</h1>
-  <p>
-    Ini adalah halaman <b>Home</b> dari website Node.js + Express
-    yang nantinya akan di-deploy ke <b>Vercel</b>.
-  </p>
+  <!-- Desktop Header -->
+  <header>
+    <nav>
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h2>Ilan Learning</h2>
+      </div>
+      <button class="menu-toggle" onclick="openMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul>
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <hr>
+  <main>
+    <section id="hero">
+      <h1>Platform Pembelajaran Web Development Modern</h1>
+      <p>
+        Selamat datang di platform pembelajaran Ilan Al Iman. Website ini dibangun menggunakan 
+        teknologi modern seperti Node.js, Express, PostgreSQL, dan di-deploy melalui Vercel.
+      </p>
+      <p>
+        Proyek ini merupakan bagian dari pembelajaran full-stack web development dengan fokus 
+        pada arsitektur backend yang scalable dan database relasional. Semua source code tersedia 
+        secara open source di <br>
+        <a href="https://github.com/AibyIlannn/ilan-nodejs-learn" target="_blank" rel="noopener noreferrer" class="link">
+          <i class="fab fa-github"></i> GitHub Repository
+        </a>.
+      </p>
+    </section>
 
-  <!-- CHAT SECTION -->
-  <section class="chat-section" id="chatBox">
-    <div class="chat other">Halo 👋</div>
-    <div class="chat user">Hai juga!</div>
-  </section>
+    <section id="content">
+      <h3>Fitur Pembelajaran</h3>
+      <article class="content-grid">
+        <div class="grid-left">
+          <h4><i class="fas fa-server"></i> Backend Architecture</h4>
+          <p>Memahami struktur backend dengan Node.js dan Express untuk membangun REST API yang efisien dan terstruktur.</p>
+        </div>
+        <div class="grid-right">
+          <div class="grid-item">
+            <h4><i class="fas fa-database"></i> Database Management</h4>
+            <p>Implementasi PostgreSQL untuk mengelola data secara relasional dengan query optimization dan indexing.</p>
+          </div>
+          <div class="grid-item">
+            <h4><i class="fas fa-rocket"></i> Deployment Strategy</h4>
+            <p>Mempelajari cara deploy aplikasi Node.js ke Vercel dengan konfigurasi yang tepat untuk production environment.</p>
+          </div>
+        </div>
+      </article>
+    </section>
 
-  <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="Ketik pesan..." />
-    <button onclick="sendChat()">Kirim</button>
-  </div>
+    <section id="chat">
+      <h3><i class="fas fa-comments"></i> Real-Time Chat Demo</h3>
+      <p>Fitur chat sederhana yang terintegrasi dengan database PostgreSQL untuk menyimpan riwayat percakapan.</p>
+      
+      <div class="chat-container">
+        <div class="chat-section" id="chatBox">
+          <div class="chat other">
+            <div>Selamat datang di platform pembelajaran</div>
+            <div class="chat-time">10:00</div>
+          </div>
+          <div class="chat user">
+            <div>Terima kasih</div>
+            <div class="chat-time">10:01</div>
+          </div>
+        </div>
 
-  <hr>
+        <div class="chat-input">
+          <input type="text" id="chatInput" placeholder="Ketik pesan Anda..." />
+          <button onclick="sendChat()">
+            <i class="fas fa-paper-plane"></i> Kirim
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    © 2026 Web by Ilan Al Iman
+    <p><i class="far fa-copyright"></i> 2026 Ilan Al Iman | Learning Platform | Node.js + PostgreSQL + Vercel</p>
   </footer>
 
-<script>
-  const chatBox = document.getElementById("chatBox");
-  const chatInput = document.getElementById("chatInput");
+  <script>
+    const chatBox = document.getElementById("chatBox");
+    const chatInput = document.getElementById("chatInput");
+    const mobileAside = document.getElementById("mobileAside");
+    const overlay = document.getElementById("overlay");
 
-  // generate & simpan user_id lokal
-  let userId = localStorage.getItem("user_id");
-  if (!userId) {
-    userId = Math.random().toString(36).substring(2, 8);
-    localStorage.setItem("user_id", userId);
-  }
+    // Menu Functions
+    function openMenu() {
+      mobileAside.classList.add("active");
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
 
-  function formatTime(time) {
-    const date = new Date(time);
-    return date.toLocaleTimeString("id-ID", {
-      hour: "2-digit",
-      minute: "2-digit"
+    function closeMenu() {
+      mobileAside.classList.remove("active");
+      overlay.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    // Chat Functions
+    let userId = localStorage.getItem("user_id");
+    if (!userId) {
+      userId = Math.random().toString(36).substring(2, 8);
+      localStorage.setItem("user_id", userId);
+    }
+
+    function formatTime(time) {
+      const date = new Date(time);
+      return date.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function renderChat(message, time, isUser) {
+      const div = document.createElement("div");
+      div.className = `chat ${isUser ? "user" : "other"}`;
+
+      div.innerHTML = `
+        <div>${message}</div>
+        <div class="chat-time">${formatTime(time)}</div>
+      `;
+
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function loadChats() {
+      try {
+        const res = await fetch("/api/chats");
+        const chats = await res.json();
+        chatBox.innerHTML = "";
+
+        chats.forEach(chat => {
+          renderChat(
+            chat.message,
+            chat.created_at,
+            chat.user_id === userId
+          );
+        });
+      } catch (error) {
+        console.error("Error loading chats:", error);
+      }
+    }
+
+    async function sendChat() {
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      renderChat(message, new Date(), true);
+      chatInput.value = "";
+
+      try {
+        await fetch("/api/chats", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message,
+            user_id: userId
+          })
+        });
+      } catch (error) {
+        console.error("Error sending chat:", error);
+      }
+    }
+
+    chatInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        sendChat();
+      }
     });
-  }
 
-  function renderChat(message, time, isUser) {
-    const div = document.createElement("div");
-    div.className = `chat ${isUser ? "user" : "other"}`;
-
-    div.innerHTML = `
-      <div>${message}</div>
-      <div class="chat-time">${formatTime(time)}</div>
-    `;
-
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  async function loadChats() {
-    const res = await fetch("/api/chats");
-    const chats = await res.json();
-    chatBox.innerHTML = "";
-
-    chats.forEach(chat => {
-      renderChat(
-        chat.message,
-        chat.created_at,
-        chat.user_id === userId
-      );
-    });
-  }
-
-  async function sendChat() {
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    renderChat(message, new Date(), true);
-    chatInput.value = "";
-
-    await fetch("/api/chats", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message,
-        user_id: userId
-      })
-    });
-  }
-
-  loadChats();
-</script>
+    loadChats();
+  </script>
 
 </body>
 </html>
