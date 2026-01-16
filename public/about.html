@@ -20,6 +20,27 @@
     Project ini dibuat untuk belajar bagaimana cara
     <b>deploy Node.js + Express ke Vercel</b>.
   </p>
+  
+  <p>
+  Website kami telah diakses oleh
+  <b><span id="view-count">...</span></b> orang.
+</p>
 
+<script>
+  async function loadViews() {
+    try {
+      const res = await fetch("/api/page-views");
+      const data = await res.json();
+
+      const aboutPage = data.find(v => v.page === "/about");
+      document.getElementById("view-count").textContent =
+        aboutPage ? aboutPage.total : 0;
+    } catch (err) {
+      document.getElementById("view-count").textContent = "0";
+    }
+  }
+
+  loadViews();
+</script>
 </body>
 </html>
