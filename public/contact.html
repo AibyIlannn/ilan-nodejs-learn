@@ -1,25 +1,522 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <!-- BASIC META -->
   <meta charset="UTF-8">
-  <title>Contact | Express Vercel</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PRIMARY SEO -->
+  <title>Hubungi Ilan Learning | Kontak Ilan Al Iman</title>
+  <meta name="description" content="Hubungi Ilan Al Iman, full-stack web developer dengan fokus Node.js, PostgreSQL, dan teknologi modern. Terbuka untuk kolaborasi dan konsultasi proyek.">
+  <meta name="keywords" content="kontak ilan al iman, web developer, nodejs developer, postgresql, full-stack developer">
+  <meta name="author" content="Ilan Al Iman">
+  <meta name="robots" content="index, follow">
+
+  <!-- CANONICAL -->
+  <link rel="canonical" href="https://ilan-nodejs-learn.vercel.app/contact">
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/jpeg" href="/favicon.jpg">
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="Hubungi Ilan Learning | Kontak">
+  <meta property="og:description" content="Halaman kontak Ilan Learning untuk kolaborasi, konsultasi, dan diskusi proyek web development.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ilan-nodejs-learn.vercel.app/contact">
+  <meta property="og:image" content="https://ilan-nodejs-learn.vercel.app/favicon.jpg">
+
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hubungi Ilan Learning">
+  <meta name="twitter:description" content="Kontak Ilan Al Iman untuk kerja sama dan konsultasi web development.">
+  <meta name="twitter:image" content="https://ilan-nodejs-learn.vercel.app/favicon.jpg">
+
+  <!-- STRUCTURED DATA (CONTACT PAGE) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Kontak Ilan Learning",
+    "url": "https://ilan-nodejs-learn.vercel.app/contact",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Ilan Al Iman",
+      "jobTitle": "Full-stack Web Developer",
+      "sameAs": [
+        "https://github.com/AibyIlannn"
+      ]
+    }
+  }
+  </script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts - Crimson Text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2C3E50;
+      --secondary: #ECF0F1;
+      --accent: #3498DB;
+      --text: #34495E;
+    }
+
+    body {
+      font-family: 'Crimson Text', serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--secondary);
+    }
+
+    /* Desktop Navigation */
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 1.5rem;
+    }
+
+    nav h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Mobile Aside Navigation */
+    .mobile-aside {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--primary);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .mobile-aside.active {
+      left: 0;
+    }
+
+    .aside-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .aside-header h2 {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .mobile-aside ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+
+    .mobile-aside li {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .mobile-aside a:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      max-width: 800px;
+      font-size: 1.1rem;
+    }
+
+    a.link {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    a.link:hover {
+      border-bottom-color: var(--primary);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .contact-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .contact-card h4 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .contact-card p {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 100%;
+    }
+
+    .contact-card a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .contact-card a:hover {
+      color: var(--primary);
+    }
+
+    .contact-card i {
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--primary);
+      color: white;
+      margin-top: 3rem;
+    }
+
+    footer p {
+      max-width: 100%;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      h3 {
+        font-size: 1.6rem;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.9rem;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+      }
+
+      main {
+        padding: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .quote-container {
+        padding: 1rem;
+      }
+
+      .quote-text {
+        font-size: 1.05rem;
+      }
+
+      .quote-author {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/">Home</a> |
-    <a href="/about">About</a> |
-    <a href="/contact">Contact</a>
-  </nav>
+  <!-- Mobile Overlay -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
-  <hr>
+  <!-- Mobile Aside Navigation -->
+  <aside class="mobile-aside" id="mobileAside">
+    <div class="aside-header">
+      <h2><i class="fas fa-graduation-cap"></i> Ilan Learning</h2>
+      <button class="close-btn" onclick="closeMenu()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul>
+      <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </aside>
 
-  <h1>Contact</h1>
-  <p>
-    Email: example@email.com <br>
-    Instagram: @yourusername
-  </p>
+  <!-- Desktop Header -->
+  <header>
+    <nav>
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h2>Ilan Learning</h2>
+      </div>
+      <button class="menu-toggle" onclick="openMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul>
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero">
+      <h1>Hubungi Kami</h1>
+    </section>
+
+    <section id="contact-info">
+      <h3>Informasi Kontak</h3>
+      <p>
+        Jika Anda memiliki pertanyaan, ingin berkolaborasi dalam proyek, atau sekadar berdiskusi tentang web development dan teknologi, jangan ragu untuk menghubungi saya melalui salah satu channel di bawah ini. Saya terbuka untuk diskusi, konsultasi, dan kesempatan kolaborasi yang menarik.
+      </p>
+
+      <div class="contact-grid">
+        <article class="contact-card">
+          <h4><i class="fas fa-envelope"></i> Email</h4>
+          <p><a href="mailto:devilanilanaliman@gmail.com">devilanilanaliman@gmail.com</a></p>
+        </article>
+
+        <article class="contact-card">
+          <h4><i class="fab fa-whatsapp"></i> WhatsApp</h4>
+          <p><a href="https://wa.me/6289538669267" target="_blank" rel="noopener noreferrer">+62 895-3866-92667</a></p>
+        </article>
+
+        <article class="contact-card">
+          <h4><i class="fab fa-github"></i> GitHub</h4>
+          <p><a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer">@AibyIlannn</a></p>
+        </article>
+
+        <article class="contact-card">
+          <h4><i class="fab fa-instagram"></i> Instagram</h4>
+          <p><a href="https://instagram.com/ilanaliman.js" target="_blank" rel="noopener noreferrer">@ilanaliman.js</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about-website">
+      <h3>Tentang Website Ini</h3>
+      <p>
+        Platform pembelajaran ini dibangun sebagai proyek edukasi yang berfokus pada pengembangan web modern menggunakan <strong>Node.js</strong>, <strong>Express.js</strong>, dan <strong>PostgreSQL</strong>. Website ini di-deploy menggunakan <strong>Vercel</strong> untuk memberikan performa yang optimal dan reliability yang tinggi. Proyek ini dirancang untuk memberikan pengalaman belajar yang praktis bagi developer yang ingin memahami arsitektur full-stack web development dari fundamental hingga production deployment.
+      </p>
+      <p>
+        Source code lengkap tersedia di <a href="https://github.com/AibyIlannn/ilan-nodejs-learn" target="_blank" rel="noopener noreferrer" class="link">GitHub Repository</a>, dan Anda dapat mengakses live demo melalui <a href="https://ilan-nodejs-learn.vercel.app/" target="_blank" rel="noopener noreferrer" class="link">platform Vercel</a>. Setiap komponen dalam proyek ini dirancang dengan mempertimbangkan best practices industri untuk memastikan kode yang clean, scalable, dan maintainable.
+      </p>
+    </section>
+
+    <section id="about-developer">
+      <h3>Tentang Developer</h3>
+      <p>
+        <strong>Ilan Al Iman</strong> adalah seorang full-stack web developer yang passionate dalam bidang pengembangan aplikasi modern dan teknologi open source. Dengan expertise dalam teknologi seperti <em>Node.js</em>, <em>Express</em>, <em>PostgreSQL</em>, <em>React</em>, dan berbagai framework modern lainnya, Ilan fokus pada pembuatan solusi web yang efisien, scalable, dan user friendly.
+      </p>
+      <p>
+        Berkomitmen untuk berbagi pengetahuan dengan komunitas developer Indonesia, Ilan aktif mengembangkan proyek-proyek open source yang dapat menjadi sumber pembelajaran bagi siapa saja yang ingin mendalami web development. Portfolio lengkap dan proyek-proyek lainnya dapat dilihat di <a href="https://base-ilan.vercel.app/" target="_blank" rel="noopener noreferrer" class="link">website portfolio</a>. Melalui pendekatan pembelajaran yang transparan dan kolaboratif, Ilan berharap dapat memberikan kontribusi positif kepada ekosistem developer Indonesia dan membantu lebih banyak orang mencapai tujuan mereka dalam bidang teknologi.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>©2026 Developed by Ilan Al Iman, Powered by <a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer" class="link">Devilann</a></p>
+  </footer>
+
+  <script>
+    // Mobile Menu Functions
+    const mobileAside = document.getElementById("mobileAside");
+    const overlay = document.getElementById("overlay");
+
+    function openMenu() {
+      mobileAside.classList.add("active");
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu() {
+      mobileAside.classList.remove("active");
+      overlay.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+  </script>
 
 </body>
 </html>
