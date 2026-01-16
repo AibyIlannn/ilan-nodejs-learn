@@ -57,16 +57,50 @@ app.post("/api/chats", async (req, res) => {
   }
 });
 
+function getClientIp(req) {
+  return (
+    req.headers["x-forwarded-for"]?.split(",")[0] ||
+    req.socket.remoteAddress
+  );
+}
+
+async function trackVisitor(req, page) {
+  const ip = getClientIp(req);
+
+  try {
+    // coba simpan IP + page
+    await sql`
+      INSERT INTO page_visitors (page, ip_address)
+      VALUES (${page}, ${ip})
+    `;
+
+    // kalau berhasil insert → berarti IP baru
+    await sql`
+      UPDATE page_views
+      SET total = total + 1
+      WHERE page = ${page}
+    `;
+  } catch (error) {
+    // error UNIQUE → IP sudah ada → diabaikan
+    if (error.code !== "23505") {
+      console.error("Visitor tracking error:", error.message);
+    }
+  }
+}
+
 // halaman utama
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  await trackVisitor(req, "/");
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get("/about", (req, res) => {
+app.get("/about", async (req, res) => {
+  await trackVisitor(req, "/about");
   res.sendFile(path.join(__dirname, "public", "about.html"));
 });
 
-app.get("/contact", (req, res) => {
+app.get("/contact", async (req, res) => {
+  await trackVisitor(req, "/contact");
   res.sendFile(path.join(__dirname, "public", "contact.html"));
 });
 
@@ -84,6 +118,14 @@ app.get("/db-test", async (req, res) => {
       error: error.message
     });
   }
+});
+
+app.get("/api/page-views", async (req, res) => {
+  const data = await sql`
+    SELECT * FROM page_views
+    ORDER BY page
+  `;
+  res.json(data);
 });
 
 // ⚠️ WAJIB untuk Vercel
