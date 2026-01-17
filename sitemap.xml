@@ -23,13 +23,22 @@
     <priority>0.8</priority>
     <mobile:mobile/>
   </url>
+  
+  <!-- Article Page - Documentation & News -->
+  <url>
+    <loc>https://ilan-nodejs-learn.vercel.app/article</loc>
+    <lastmod>2026-01-16T10:00:00+07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <mobile:mobile/>
+  </url>
 
   <!-- Contact Page - Developer Contact Information -->
   <url>
     <loc>https://ilan-nodejs-learn.vercel.app/contact</loc>
     <lastmod>2026-01-16T10:00:00+07:00</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <mobile:mobile/>
   </url>
 
@@ -38,14 +47,14 @@
     <loc>https://ilan-nodejs-learn.vercel.app/api/chats</loc>
     <lastmod>2026-01-16T10:00:00+07:00</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://ilan-nodejs-learn.vercel.app/api/page-views</loc>
     <lastmod>2026-01-16T10:00:00+07:00</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
 
   <!-- GitHub Repository - External but important reference -->
@@ -58,7 +67,7 @@
 
   <!-- Developer Portfolio -->
   <url>
-    <loc>https://base-ilan.vercel.app/</loc>
+    <loc>https://devilann.vercel.app/</loc>
     <lastmod>2026-01-16T10:00:00+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -70,7 +79,7 @@
     <loc>https://github.com/AibyIlannn</loc>
     <lastmod>2026-01-16T10:00:00+07:00</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Social Media Profiles -->

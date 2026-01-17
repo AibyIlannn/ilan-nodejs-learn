@@ -478,6 +478,7 @@
     <ul>
       <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
       <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="/article"><i class="fas fa-newspaper"></i> Article</a></li>
       <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
     </ul>
   </aside>
@@ -495,6 +496,7 @@
       <ul>
         <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
         <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/article"><i class="fas fa-newspaper"></i> Article</a></li>
         <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
       </ul>
     </nav>
@@ -588,140 +590,7 @@
     <p>©2026 Developed by Ilan Al Iman, Powered by <a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer" class="link">Devilann</a></p>
   </footer>
 
-  <script>
-    // Mobile Menu Functions
-    const mobileAside = document.getElementById("mobileAside");
-    const overlay = document.getElementById("overlay");
-
-    function openMenu() {
-      mobileAside.classList.add("active");
-      overlay.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeMenu() {
-      mobileAside.classList.remove("active");
-      overlay.classList.remove("active");
-      document.body.style.overflow = "auto";
-    }
-
-    // Data Loading and Statistics
-    let chartInstance = null;
-
-    async function loadStatistics() {
-      try {
-        // Load page views
-        const viewsRes = await fetch("/api/page-views");
-        const viewsData = await viewsRes.json();
-        
-        // Load chat count
-        const chatsRes = await fetch("/api/chats");
-        const chatsData = await chatsRes.json();
-        
-        // Process views data
-        const homeView = viewsData.find(v => v.page === "/");
-        const aboutView = viewsData.find(v => v.page === "/about");
-        const contactView = viewsData.find(v => v.page === "/contact");
-        
-        const homeViewCount = homeView ? parseInt(homeView.total) : 0;
-        const aboutViewCount = aboutView ? parseInt(aboutView.total) : 0;
-        const contactViewCount = contactView ? parseInt(contactView.total) : 0;
-        const totalViews = homeViewCount + aboutViewCount + contactViewCount;
-        
-        // Count unique chat users
-        const uniqueUsers = new Set();
-        chatsData.forEach(chat => {
-          if (chat.user_id) {
-            uniqueUsers.add(chat.user_id);
-          }
-        });
-        const chatUserCount = uniqueUsers.size;
-        
-        // Update DOM
-        document.getElementById("totalVisitors").textContent = totalViews.toLocaleString();
-        document.getElementById("totalChats").textContent = chatsData.length.toLocaleString();
-        
-        document.getElementById("homeViews").textContent = homeViewCount.toLocaleString();
-        document.getElementById("aboutViews").textContent = aboutViewCount.toLocaleString();
-        document.getElementById("contactViews").textContent = contactViewCount.toLocaleString();
-        
-        // Calculate engagement percentage
-        const chatPercentage = homeViewCount > 0 
-          ? Math.round((chatUserCount / homeViewCount) * 100) 
-          : 0;
-        const noChatPercentage = 100 - chatPercentage;
-        
-        // Create chart
-        createEngagementChart(chatPercentage, noChatPercentage);
-        
-      } catch (error) {
-        console.error("Error loading statistics:", error);
-        
-        // Set default values on error
-        document.getElementById("totalVisitors").textContent = "0";
-        document.getElementById("totalChats").textContent = "0";
-        document.getElementById("homeViews").textContent = "0";
-        document.getElementById("aboutViews").textContent = "0";
-        document.getElementById("contactViews").textContent = "0";
-        
-        createEngagementChart(0, 100);
-      }
-    }
-
-    function createEngagementChart(chatPercent, noChatPercent) {
-      const ctx = document.getElementById('engagementChart').getContext('2d');
-      
-      // Destroy existing chart if exists
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
-      
-      chartInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Pengguna yang Chat', 'Pengguna tanpa Chat'],
-          datasets: [{
-            data: [chatPercent, noChatPercent],
-            backgroundColor: [
-              '#3498DB',
-              '#ECF0F1'
-            ],
-            borderColor: [
-              '#2C3E50',
-              '#2C3E50'
-            ],
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                padding: 20,
-                font: {
-                  size: 14,
-                  family: "'Crimson Text', serif"
-                }
-              }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return context.label + ': ' + context.parsed + '%';
-                }
-              }
-            }
-          }
-        }
-      });
-    }
-
-    // Load data on page load
-    loadStatistics();
-  </script>
+  <script src="src/js/about.js"></script>
 
 </body>
 </html>

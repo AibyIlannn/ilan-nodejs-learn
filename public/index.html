@@ -532,6 +532,7 @@
     <ul>
       <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
       <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="/article"><i class="fas fa-newspaper"></i> Article</a></li>
       <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
     </ul>
   </aside>
@@ -549,6 +550,7 @@
       <ul>
         <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
         <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/article"><i class="fas fa-newspaper"></i> Article</a></li>
         <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
       </ul>
     </nav>
@@ -621,100 +623,7 @@
     <p>©2026 Developed Ilan Al Iman, Powered by <a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer" class="link">Devilann</a></p>
   </footer>
 
-  <script>
-    const chatBox = document.getElementById("chatBox");
-    const chatInput = document.getElementById("chatInput");
-    const mobileAside = document.getElementById("mobileAside");
-    const overlay = document.getElementById("overlay");
-
-    // Menu Functions
-    function openMenu() {
-      mobileAside.classList.add("active");
-      overlay.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeMenu() {
-      mobileAside.classList.remove("active");
-      overlay.classList.remove("active");
-      document.body.style.overflow = "auto";
-    }
-
-    // Chat Functions
-    let userId = localStorage.getItem("user_id");
-    if (!userId) {
-      userId = Math.random().toString(36).substring(2, 8);
-      localStorage.setItem("user_id", userId);
-    }
-
-    function formatTime(time) {
-      const date = new Date(time);
-      return date.toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    function renderChat(message, time, isUser) {
-      const div = document.createElement("div");
-      div.className = `chat ${isUser ? "user" : "other"}`;
-
-      div.innerHTML = `
-        <div>${message}</div>
-        <div class="chat-time">${formatTime(time)}</div>
-      `;
-
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    async function loadChats() {
-      try {
-        const res = await fetch("/api/chats");
-        const chats = await res.json();
-        chatBox.innerHTML = "";
-
-        chats.forEach(chat => {
-          renderChat(
-            chat.message,
-            chat.created_at,
-            chat.user_id === userId
-          );
-        });
-      } catch (error) {
-        console.error("Error loading chats:", error);
-      }
-    }
-
-    async function sendChat() {
-      const message = chatInput.value.trim();
-      if (!message) return;
-
-      renderChat(message, new Date(), true);
-      chatInput.value = "";
-
-      try {
-        await fetch("/api/chats", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message,
-            user_id: userId
-          })
-        });
-      } catch (error) {
-        console.error("Error sending chat:", error);
-      }
-    }
-
-    chatInput.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        sendChat();
-      }
-    });
-
-    loadChats();
-  </script>
+  <script src="src/js/index.js"></script>
 
 </body>
 </html>

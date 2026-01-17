@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- BASIC META -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PRIMARY SEO -->
+  <title>Upload Artikel | Ilan Learning</title>
+  <meta name="description" content="Upload artikel baru untuk Ilan Learning">
+  <meta name="author" content="Ilan Al Iman">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/jpeg" href="/favicon.jpg">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts - Crimson Text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2C3E50;
+      --secondary: #ECF0F1;
+      --accent: #3498DB;
+      --text: #34495E;
+      --danger: #e74c3c;
+    }
+
+    body {
+      font-family: 'Crimson Text', serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--secondary);
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-box {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 450px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal-box i {
+      font-size: 4rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-box h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .modal-box p {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+
+    .pin-input-container {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .pin-input {
+      width: 50px;
+      height: 60px;
+      font-size: 2rem;
+      text-align: center;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Crimson Text', serif;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+
+    .pin-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .pin-input.error {
+      border-color: var(--danger);
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 1rem;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .btn-verify {
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-family: 'Crimson Text', serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-verify:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .btn-verify:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Desktop Navigation */
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 1.5rem;
+    }
+
+    nav h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Mobile Aside Navigation */
+    .mobile-aside {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--primary);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .mobile-aside.active {
+      left: 0;
+    }
+
+    .aside-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .aside-header h2 {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .mobile-aside ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+
+    .mobile-aside li {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .mobile-aside a:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Main Content */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+      font-size: 1.15rem;
+      color: var(--text);
+    }
+
+    .upload-form {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .form-group label i {
+      color: var(--accent);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 1rem;
+      border: 2px dashed #cbd5e0;
+      border-radius: 8px;
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: #f8f9fa;
+    }
+
+    input[type="file"]:hover {
+      border-color: var(--accent);
+      background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.95rem;
+      color: #718096;
+      margin-top: 0.5rem;
+    }
+
+    .image-preview {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 1rem;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .section-container {
+      margin-top: 2rem;
+    }
+
+    .section-item {
+      border: 2px solid #e2e8f0;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .section-number {
+      background-color: var(--accent);
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .btn-remove {
+      background-color: var(--danger);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-remove:hover {
+      background-color: #c0392b;
+      transform: translateY(-2px);
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Crimson Text', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-add {
+      background-color: white;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      margin-top: 1.5rem;
+    }
+
+    .btn-add:hover {
+      background-color: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-submit {
+      background-color: var(--accent);
+      color: white;
+      margin-top: 2rem;
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-submit:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--primary);
+      color: white;
+      margin-top: 3rem;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: white;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+
+      .upload-form {
+        padding: 1.5rem;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .pin-input {
+        width: 45px;
+        height: 55px;
+        font-size: 1.75rem;
+      }
+
+      .modal-box {
+        padding: 2rem;
+      }
+
+      .modal-box h2 {
+        font-size: 1.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 1rem;
+      }
+
+      .upload-form {
+        padding: 1.25rem;
+      }
+
+      .page-header h1 {
+        font-size: 1.75rem;
+      }
+
+      .section-item {
+        padding: 1.25rem;
+      }
+
+      .pin-input {
+        width: 40px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+
+      .pin-input-container {
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <i class="fas fa-lock"></i>
+      <h2>Masukkan PIN</h2>
+      <p>Silakan masukkan 6 digit PIN untuk mengakses halaman upload artikel</p>
+      
+      <div class="pin-input-container">
+        <input type="text" class="pin-input" maxlength="1" id="pin1" autocomplete="off">
+        <input type="text" class="pin-input" maxlength="1" id="pin2" autocomplete="off">
+        <input type="text" class="pin-input" maxlength="1" id="pin3" autocomplete="off">
+        <input type="text" class="pin-input" maxlength="1" id="pin4" autocomplete="off">
+        <input type="text" class="pin-input" maxlength="1" id="pin5" autocomplete="off">
+        <input type="text" class="pin-input" maxlength="1" id="pin6" autocomplete="off">
+      </div>
+
+      <p class="error-message" id="errorMessage">PIN yang Anda masukkan salah!</p>
+
+      <button class="btn-verify" onclick="verifyPin()">
+        Verifikasi PIN
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+  
+  <!-- Mobile Aside Navigation -->
+  <aside class="mobile-aside" id="mobileAside">
+    <div class="aside-header">
+      <h2><i class="fas fa-graduation-cap"></i> Ilan Learning</h2>
+      <button class="close-btn" onclick="closeMenu()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul>
+      <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </aside>
+
+  <!-- Desktop Header -->
+  <header>
+    <nav>
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h2>Ilan Learning</h2>
+      </div>
+      <button class="menu-toggle" onclick="openMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul>
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <h1>Upload Artikel Baru</h1>
+      <p>Bagikan pengetahuan dan inspirasi Anda kepada pembaca</p>
+    </div>
+
+    <div class="upload-form">
+      <div class="form-group">
+        <label>
+          <i class="fas fa-image"></i>
+          Gambar Utama Artikel
+        </label>
+        <input type="file" id="img" accept="image/*">
+        <img id="preview" class="image-preview" alt="Preview">
+      </div>
+
+      <div class="form-group">
+        <label>
+          <i class="fas fa-heading"></i>
+          Judul Artikel
+        </label>
+        <input type="text" id="title" placeholder="Masukkan judul artikel yang menarik...">
+      </div>
+
+      <div class="form-group">
+        <label>
+          <i class="fas fa-align-left"></i>
+          Tentang Artikel
+        </label>
+        <textarea id="about" maxlength="300" placeholder="Deskripsi singkat tentang artikel (maksimal 300 karakter)"></textarea>
+        <div class="char-count">
+          <span id="charCount">0</span>/300 karakter
+        </div>
+      </div>
+
+      <div id="sections" class="section-container"></div>
+
+      <button class="btn-add" onclick="addSection()">
+        <i class="fas fa-plus"></i> Tambahkan Isi Artikel
+      </button>
+      
+      <button class="btn-submit" onclick="submitArticle()">
+        <i class="fas fa-cloud-arrow-up"></i> Upload Artikel
+      </button>
+    </div>
+  </main>
+
+  <footer>
+    <p>©2026 Developed by Ilan Al Iman, Powered by <a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer">Devilann</a></p>
+  </footer>
+
+  <script>
+    // ========== AUTH SYSTEM ==========
+    const UPLOAD_KEY = "200929"; // Sesuaikan dengan env KEY_UPLOAD
+    const AUTH_STORAGE_KEY = "upload_auth_verified";
+
+    // Check auth on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      const isVerified = localStorage.getItem(AUTH_STORAGE_KEY);
+      
+      if (!isVerified) {
+        document.getElementById("authModal").style.display = "flex";
+        document.getElementById("pin1").focus();
+      } else {
+        document.getElementById("authModal").style.display = "none";
+      }
+    });
+
+    // PIN Input Auto-focus
+    const pinInputs = document.querySelectorAll(".pin-input");
+    pinInputs.forEach((input, index) => {
+      input.addEventListener("input", (e) => {
+        const value = e.target.value;
+        
+        // Only allow numbers
+        if (!/^\d$/.test(value)) {
+          e.target.value = "";
+          return;
+        }
+
+        // Auto-focus next input
+        if (value && index < pinInputs.length - 1) {
+          pinInputs[index + 1].focus();
+        }
+      });
+
+      // Handle backspace
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !e.target.value && index > 0) {
+          pinInputs[index - 1].focus();
+        }
+      });
+
+      // Handle paste
+      input.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData("text").replace(/\D/g, "");
+        
+        if (pastedData.length === 6) {
+          pastedData.split("").forEach((char, i) => {
+            if (pinInputs[i]) {
+              pinInputs[i].value = char;
+            }
+          });
+          pinInputs[5].focus();
+        }
+      });
+    });
+
+    function verifyPin() {
+      const pin = Array.from(pinInputs).map(input => input.value).join("");
+      const errorMsg = document.getElementById("errorMessage");
+
+      if (pin.length !== 6) {
+        showError("PIN harus 6 digit!");
+        return;
+      }
+
+      if (pin === UPLOAD_KEY) {
+        localStorage.setItem(AUTH_STORAGE_KEY, "true");
+        document.getElementById("authModal").style.display = "none";
+        errorMsg.classList.remove("show");
+      } else {
+        showError("PIN yang Anda masukkan salah!");
+        pinInputs.forEach(input => {
+          input.value = "";
+          input.classList.add("error");
+        });
+        pinInputs[0].focus();
+
+        setTimeout(() => {
+          pinInputs.forEach(input => input.classList.remove("error"));
+        }, 500);
+      }
+    }
+
+    function showError(message) {
+      const errorMsg = document.getElementById("errorMessage");
+      errorMsg.textContent = message;
+      errorMsg.classList.add("show");
+    }
+
+    // Force redirect if auth is removed
+    setInterval(() => {
+      const isVerified = localStorage.getItem(AUTH_STORAGE_KEY);
+      if (!isVerified) {
+        window.location.href = "/";
+      }
+    }, 20000);
+
+    // ========== MENU FUNCTIONS ==========
+    const mobileAside = document.getElementById("mobileAside");
+    const overlay = document.getElementById("overlay");
+
+    function openMenu() {
+      mobileAside.classList.add("active");
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu() {
+      mobileAside.classList.remove("active");
+      overlay.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    // ========== UPLOAD FORM ==========
+    let imageBase64 = "";
+    let sections = [];
+
+    const imgInput = document.getElementById("img");
+    const preview = document.getElementById("preview");
+    const aboutTextarea = document.getElementById("about");
+    const charCountSpan = document.getElementById("charCount");
+
+    // Preview gambar
+    imgInput.onchange = e => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Ukuran gambar terlalu besar! Maksimal 5MB");
+        imgInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        imageBase64 = reader.result;
+        preview.src = imageBase64;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    };
+
+    // Character counter
+    aboutTextarea.addEventListener("input", () => {
+      charCountSpan.textContent = aboutTextarea.value.length;
+    });
+
+    function addSection() {
+      if (sections.length >= 5) {
+        alert("Maksimal 5 bagian artikel");
+        return;
+      }
+      
+      sections.push({ subjudul: "", isi: [""] });
+      render();
+    }
+
+    function removeSection(index) {
+      if (confirm("Hapus bagian artikel ini?")) {
+        sections.splice(index, 1);
+        render();
+      }
+    }
+
+    function addParagraph(sectionIndex) {
+      if (sections[sectionIndex].isi.length >= 3) {
+        alert("Maksimal 3 paragraf per bagian");
+        return;
+      }
+      sections[sectionIndex].isi.push("");
+      render();
+    }
+
+    function render() {
+      const sectionsDiv = document.getElementById("sections");
+      sectionsDiv.innerHTML = "";
+
+      sections.forEach((s, i) => {
+        const sectionDiv = document.createElement("div");
+        sectionDiv.className = "section-item";
+        
+        sectionDiv.innerHTML = `
+          <div class="section-header">
+            <span class="section-number">Bagian ${i + 1}</span>
+            <button class="btn-remove" onclick="removeSection(${i})">
+              <i class="fas fa-trash"></i> Hapus
+            </button>
+          </div>
+          
+          <div class="form-group">
+            <label>
+              <i class="fas fa-bookmark"></i>
+              Subjudul (Opsional)
+            </label>
+            <input type="text" placeholder="Subjudul bagian artikel..." 
+              value="${escapeHtml(s.subjudul)}"
+              oninput="sections[${i}].subjudul=this.value">
+          </div>
+
+          ${s.isi.map((txt, j) => `
+            <div class="form-group">
+              <label>
+                <i class="fas fa-paragraph"></i>
+                Paragraf ${j + 1}
+              </label>
+              <textarea maxlength="300" placeholder="Isi paragraf (maksimal 300 karakter)"
+                oninput="sections[${i}].isi[${j}]=this.value">${escapeHtml(txt)}</textarea>
+            </div>
+          `).join("")}
+
+          ${s.isi.length < 3 ? 
+            `<button class="btn-add" onclick="addParagraph(${i})" style="margin-top: 0;">
+              <i class="fas fa-plus"></i> Tambah Paragraf
+            </button>` 
+            : ""}
+        `;
+        
+        sectionsDiv.appendChild(sectionDiv);
+      });
+    }
+
+    async function submitArticle() {
+      const title = document.getElementById("title").value.trim();
+      const about = document.getElementById("about").value.trim();
+
+      if (!title) {
+        alert("Judul artikel wajib diisi!");
+        document.getElementById("title").focus();
+        return;
+      }
+
+      if (!about) {
+        alert("Deskripsi artikel wajib diisi!");
+        document.getElementById("about").focus();
+        return;
+      }
+
+      if (!imageBase64) {
+        alert("Gambar artikel wajib diupload!");
+        return;
+      }
+
+      if (sections.length === 0) {
+        alert("Tambahkan minimal 1 isi artikel!");
+        return;
+      }
+
+      const hasEmptyContent = sections.some(s => 
+        s.isi.every(paragraph => !paragraph.trim())
+      );
+
+      if (hasEmptyContent) {
+        alert("Setiap bagian artikel harus memiliki minimal 1 paragraf yang terisi!");
+        return;
+      }
+
+      const submitBtn = event.target;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+
+      try {
+        const res = await fetch("/api/articles", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title,
+            about,
+            image: imageBase64,
+            content: sections
+          })
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          alert("✅ Artikel berhasil diupload!");
+          location.href = "/article/" + result.slug;
+        } else {
+          throw new Error(result.error || "Gagal mengupload artikel");
+        }
+      } catch (error) {
+        alert("❌ Error: " + error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> Upload Artikel';
+      }
+    }
+
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+  </script>
+</body>
+</html>
