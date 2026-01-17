@@ -67,7 +67,7 @@ Catatan:
 - Jangan gunakan tanda kutip
 - Jangan commit file .env ke GitHub
 - Pastikan .env sudah ada di .gitignore
-- 
+  
 ---
 
 5.2 Mendapatkan DATABASE_URL dari Neon Tech
@@ -133,8 +133,9 @@ Table ini digunakan untuk menyimpan data chat.
 
 9.1 GET Semua Chat
 Endpoint:
+```api
 GET /api/chats
-
+```
 Fungsi:
 Mengambil seluruh chat dari database
 Digunakan oleh frontend untuk menampilkan pesan
@@ -143,14 +144,16 @@ Digunakan oleh frontend untuk menampilkan pesan
 
 9.2 POST Chat Baru
 Endpoint:
+```api
 POST /api/chats
-
+```
 Body JSON:
+```json
 {
   "message": "Isi chat",
   "user_id": "local_user_id"
 }
-
+```
 Fungsi:
 Menyimpan chat ke PostgreSQL
 Digunakan saat user mengirim pesan
@@ -170,6 +173,7 @@ Bukan sistem autentikasi, hanya untuk pembelajaran
 11. Konfigurasi Vercel
 
 11.1 File vercel.json
+```vercel.json
 {
   "version": 2,
   "builds": [
@@ -185,6 +189,7 @@ Bukan sistem autentikasi, hanya untuk pembelajaran
     }
   ]
 }
+```
 
 ---
 
@@ -227,12 +232,8 @@ Integrasi frontend dan backend tanpa framework tambahan
 
 
 Cocok sebagai dasar untuk:
-
-REST API
-
-Chat app sederhana
-
-Latihan fullstack JavaScript
-
+- REST API
+- Chat app sederhana
+- Latihan fullstack JavaScript
 
 ---
