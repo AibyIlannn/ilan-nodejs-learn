@@ -84,6 +84,7 @@ Langkah singkat:
 6. Struktur Project
 
 Struktur folder utama:
+```project
 root/
 ├─ public/
 │  ├─ index.html
@@ -93,6 +94,7 @@ root/
 ├─ vercel.json
 ├─ package.json
 └─ .env
+```
 
 ---
 
