@@ -703,9 +703,9 @@
           <i class="fas fa-align-left"></i>
           Tentang Artikel
         </label>
-        <textarea id="about" maxlength="300" placeholder="Deskripsi singkat tentang artikel (maksimal 300 karakter)"></textarea>
+        <textarea id="about" maxlength="350" placeholder="Deskripsi singkat tentang artikel (maksimal 350 karakter)"></textarea>
         <div class="char-count">
-          <span id="charCount">0</span>/300 karakter
+          <span id="charCount">0</span>/350 karakter
         </div>
       </div>
 
@@ -932,7 +932,7 @@
                 <i class="fas fa-paragraph"></i>
                 Paragraf ${j + 1}
               </label>
-              <textarea maxlength="300" placeholder="Isi paragraf (maksimal 300 karakter)"
+              <textarea maxlength="800" placeholder="Isi paragraf (maksimal 800 karakter)"
                 oninput="sections[${i}].isi[${j}]=this.value">${escapeHtml(txt)}</textarea>
             </div>
           `).join("")}
