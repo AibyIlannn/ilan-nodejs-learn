@@ -715,7 +715,7 @@
         <i class="fas fa-plus"></i> Tambahkan Isi Artikel
       </button>
       
-      <button class="btn-submit" onclick="submitArticle()">
+      <button class="btn-submit" onclick="submitArticle(event)">
         <i class="fas fa-cloud-arrow-up"></i> Upload Artikel
       </button>
     </div>
@@ -947,73 +947,72 @@
         sectionsDiv.appendChild(sectionDiv);
       });
     }
-    
-    async function submitArticle() {
-  const title = document.getElementById("title").value.trim();
-  const about = document.getElementById("about").value.trim();
 
-  if (!title) {
-    alert("Judul artikel wajib diisi!");
-    document.getElementById("title").focus();
-    return;
-  }
+    async function submitArticle(event) {
+      const title = document.getElementById("title").value.trim();
+      const about = document.getElementById("about").value.trim();
 
-  if (!about) {
-    alert("Deskripsi artikel wajib diisi!");
-    document.getElementById("about").focus();
-    return;
-  }
+      if (!title) {
+        alert("Judul artikel wajib diisi!");
+        document.getElementById("title").focus();
+        return;
+      }
 
-  if (!imageBase64) {
-    alert("Gambar artikel wajib diupload!");
-    return;
-  }
+      if (!about) {
+        alert("Deskripsi artikel wajib diisi!");
+        document.getElementById("about").focus();
+        return;
+      }
 
-  if (sections.length === 0) {
-    alert("Tambahkan minimal 1 isi artikel!");
-    return;
-  }
+      if (!imageBase64) {
+        alert("Gambar artikel wajib diupload!");
+        return;
+      }
 
-  const hasEmptyContent = sections.some(s => 
-    s.isi.every(paragraph => !paragraph.trim())
-  );
+      if (sections.length === 0) {
+        alert("Tambahkan minimal 1 isi artikel!");
+        return;
+      }
 
-  if (hasEmptyContent) {
-    alert("Setiap bagian artikel harus memiliki minimal 1 paragraf yang terisi!");
-    return;
-  }
+      const hasEmptyContent = sections.some(s => 
+        s.isi.every(paragraph => !paragraph.trim())
+      );
 
-  // PERBAIKAN: Ambil button dari DOM, bukan dari event
-  const submitBtn = document.querySelector('.btn-submit');
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+      if (hasEmptyContent) {
+        alert("Setiap bagian artikel harus memiliki minimal 1 paragraf yang terisi!");
+        return;
+      }
 
-  try {
-    const res = await fetch("/api/articles", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title,
-        about,
-        image: imageBase64,
-        content: sections
-      })
-    });
+      const submitBtn = event.target;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
 
-    const result = await res.json();
+      try {
+        const res = await fetch("/api/articles", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title,
+            about,
+            image: imageBase64,
+            content: sections
+          })
+        });
 
-    if (result.success) {
-      alert("✅ Artikel berhasil diupload!");
-      location.href = "/article/" + result.slug;
-    } else {
-      throw new Error(result.error || "Gagal mengupload artikel");
+        const result = await res.json();
+
+        if (result.success) {
+          alert("✅ Artikel berhasil diupload!");
+          location.href = "/article/" + result.slug;
+        } else {
+          throw new Error(result.error || "Gagal mengupload artikel");
+        }
+      } catch (error) {
+        alert("❌ Error: " + error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> Upload Artikel';
+      }
     }
-  } catch (error) {
-    alert("❌ Error: " + error.message);
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = '<i class="fas fa-cloud-arrow-up"></i> Upload Artikel';
-  }
-}
 
     function escapeHtml(text) {
       const map = {
