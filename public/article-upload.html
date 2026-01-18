@@ -715,7 +715,7 @@
         <i class="fas fa-plus"></i> Tambahkan Isi Artikel
       </button>
       
-      <button class="btn-submit" onclick="submitArticle(event)">
+      <button class="btn-submit" onclick="submitArticle()">
         <i class="fas fa-cloud-arrow-up"></i> Upload Artikel
       </button>
     </div>
@@ -948,7 +948,7 @@
       });
     }
 
-    async function submitArticle(event) {
+    async function submitArticle() {
       const title = document.getElementById("title").value.trim();
       const about = document.getElementById("about").value.trim();
 

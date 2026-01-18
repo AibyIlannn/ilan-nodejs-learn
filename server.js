@@ -48,7 +48,10 @@ const badWords = [
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "src")));
-app.use(express.json());
+
+// ⚠️ FIX: Tingkatkan limit untuk body-parser
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 function generateId(length = 5) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -161,23 +164,32 @@ async function trackVisitor(req, page) {
   const ip = getClientIp(req);
 
   try {
+    // Normalisasi page name - hilangkan parameter dinamis
+    let normalizedPage = page;
+    if (page.startsWith('/article/') && page !== '/article') {
+      normalizedPage = '/article/:slug';
+    }
+
+    // Insert unique visitor
     await sql`
       INSERT INTO page_visitors (page, ip_address)
-      VALUES (${page}, ${ip})
+      VALUES (${normalizedPage}, ${ip})
       ON CONFLICT (page, ip_address) DO NOTHING
     `;
 
+    // Update page views - ALWAYS increment
     const result = await sql`
       INSERT INTO page_views (page, total)
-      VALUES (${page}, 1)
+      VALUES (${normalizedPage}, 1)
       ON CONFLICT (page)
       DO UPDATE SET total = page_views.total + 1
       RETURNING total
     `;
 
+    console.log(`📊 Track: ${normalizedPage} | IP: ${ip} | Total: ${result[0]?.total || 0}`);
     return result[0]?.total || 0;
   } catch (error) {
-    console.error("Visitor tracking error:", error.message);
+    console.error("❌ Visitor tracking error:", error.message);
     return 0;
   }
 }
@@ -185,38 +197,66 @@ async function trackVisitor(req, page) {
 // ==================== ROUTES ====================
 
 app.get("/", async (req, res) => {
-  await trackVisitor(req, "/");
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  try {
+    await trackVisitor(req, "/");
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  } catch (error) {
+    console.error("Error loading home:", error);
+    res.status(500).send("Error loading page");
+  }
 });
 
 app.get("/about", async (req, res) => {
-  await trackVisitor(req, "/about");
-  res.sendFile(path.join(__dirname, "public", "about.html"));
+  try {
+    await trackVisitor(req, "/about");
+    res.sendFile(path.join(__dirname, "public", "about.html"));
+  } catch (error) {
+    console.error("Error loading about:", error);
+    res.status(500).send("Error loading page");
+  }
 });
 
 app.get("/contact", async (req, res) => {
-  await trackVisitor(req, "/contact");
-  res.sendFile(path.join(__dirname, "public", "contact.html"));
+  try {
+    await trackVisitor(req, "/contact");
+    res.sendFile(path.join(__dirname, "public", "contact.html"));
+  } catch (error) {
+    console.error("Error loading contact:", error);
+    res.status(500).send("Error loading page");
+  }
 });
-
-// ⚠️ PENTING: Route spesifik HARUS di atas route dinamis!
 
 // halaman upload artikel (admin / private)
 app.get("/article/uploads", async (req, res) => {
-  await trackVisitor(req, "/article/uploads");
-  res.sendFile(path.join(__dirname, "public", "article-upload.html"));
+  try {
+    await trackVisitor(req, "/article/uploads");
+    res.sendFile(path.join(__dirname, "public", "article-upload.html"));
+  } catch (error) {
+    console.error("Error loading article upload:", error);
+    res.status(500).send("Error loading page");
+  }
 });
 
 // halaman list artikel
 app.get("/article", async (req, res) => {
-  await trackVisitor(req, "/article");
-  res.sendFile(path.join(__dirname, "public", "article.html"));
+  try {
+    await trackVisitor(req, "/article");
+    res.sendFile(path.join(__dirname, "public", "article.html"));
+  } catch (error) {
+    console.error("Error loading article list:", error);
+    res.status(500).send("Error loading page");
+  }
 });
 
 // halaman detail artikel - HARUS PALING BAWAH
 app.get("/article/:slug", async (req, res) => {
-  await trackVisitor(req, "/article/" + req.params.slug);
-  res.sendFile(path.join(__dirname, "public", "article-detail.html"));
+  try {
+    await trackVisitor(req, "/article/" + req.params.slug);
+    res.sendFile(path.join(__dirname, "public", "article-detail.html"));
+  } catch (error) {
+    console.error("Error loading article detail:", error);
+    res.status(500).send("Error loading page");
+  }
 });
 
 // ==================== API ENDPOINTS ====================
@@ -353,10 +393,13 @@ app.post("/api/articles", async (req, res) => {
       return res.status(400).json({ error: "Invalid data" });
     }
 
-    const slug = title
+    // Slug unik dengan timestamp
+    const baseSlug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
+    
+    const slug = `${baseSlug}-${Date.now()}`;
 
     const id = generateId();
 
@@ -387,6 +430,23 @@ app.get("/api/articles/:slug", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({
+      error: 'File too large',
+      message: 'Ukuran file terlalu besar. Maksimal 50MB'
+    });
+  }
+  
+  res.status(500).json({
+    error: 'Internal server error',
+    message: err.message
+  });
 });
 
 module.exports = app;
