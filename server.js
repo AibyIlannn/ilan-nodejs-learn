@@ -17,7 +17,7 @@ const groq = new Groq({
 
 // Daftar kata kasar dasar
 const badWords = [
-  "anjing", "anjir", "anj1ng", "4nj1ng",
+  "anjing", "ajg", "4jg", "anjir", "anj1ng", "4nj1ng",
   "kontol", "kntl", "k0nt0l", "kont0l",
   "memek", "m3m3k", "mmk", "m3mk",
   "ngentot", "ngent0t", "ng3nt0t", "ngntd",
@@ -27,7 +27,7 @@ const badWords = [
   "babi", "b4b1", "bab1",
   "asu", "4su", "asw",
   "jancok", "jnck", "j4nc0k",
-  "coli", "c0li", "cl1",
+  "coli", "c0li", "cl1", "ah", "yemeteh",
   "pelacur", "plcr", "p3l4cur",
   "lonte", "l0nt3", "lnt",
   "perek", "pr3k", "p3r3k",
@@ -41,7 +41,8 @@ const badWords = [
   "bitch", "b1tch", "btch",
   "dick", "d1ck", "dck",
   "pussy", "psy", "p*ssy",
-  "ass", "4ss", "a$$"
+  "ass", "4ss", "a$$", "pepek", "fefek",
+  "bacin", "nenen", "ah ah"
 ];
 
 // Static files
