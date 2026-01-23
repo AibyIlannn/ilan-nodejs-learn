@@ -22,10 +22,10 @@ const badWords = [
   "memek", "m3m3k", "mmk", "m3mk",
   "ngentot", "ngent0t", "ng3nt0t", "ngntd",
   "bangsat", "bngst", "b4ngs4t",
-  "tolol", "t0l0l", "tll",
+  "tolol", "t0l0l", "tll", "bacot",
   "goblok", "gblk", "g0bl0k",
-  "babi", "b4b1", "bab1",
-  "asu", "4su", "asw",
+  "babi", "b4b1", "bab1", "jlk",
+  "asu", "4su", "asw", "jelek",
   "jancok", "jnck", "j4nc0k",
   "coli", "c0li", "cl1", "ah", "yemeteh",
   "pelacur", "plcr", "p3l4cur",
@@ -42,7 +42,7 @@ const badWords = [
   "dick", "d1ck", "dck",
   "pussy", "psy", "p*ssy",
   "ass", "4ss", "a$$", "pepek", "fefek",
-  "bacin", "nenen", "ah ah"
+  "bacin", "nenen", "ah ah", "lol", "tod"
 ];
 
 // Static files
