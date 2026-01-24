@@ -4,6 +4,7 @@ const chatBox = document.getElementById("chatBox");
 const chatInput = document.getElementById("chatInput");
 const mobileAside = document.getElementById("mobileAside");
 const overlay = document.getElementById("overlay");
+document.getElementById('displayUserId').textContent = userId;
 
 // Menu Functions
 function openMenu() {
@@ -33,13 +34,20 @@ function formatTime(time) {
   });
 }
 
-function renderChat(message, time, isUser) {
+function renderChat(message, time, isUser, chatUserId) {
   const div = document.createElement("div");
   div.className = `chat ${isUser ? "user" : "other"}`;
 
   div.innerHTML = `
     <div>${message}</div>
-    <div class="chat-time">${formatTime(time)}</div>
+    <div class="chat-meta">
+      <div class="chat-time">
+        <i class="fas fa-clock"></i> ${formatTime(time)}
+      </div>
+      <div class="chat-id">
+        <i class="fas fa-fingerprint"></i> ${chatUserId || 'system'}
+      </div>
+    </div>
   `;
 
   chatBox.appendChild(div);
@@ -93,7 +101,8 @@ async function loadChats() {
       renderChat(
         chat.message,
         chat.created_at,
-        chat.user_id === userId
+        chat.user_id === userId,
+        chat.user_id
       );
     });
   } catch (error) {
@@ -150,7 +159,7 @@ async function sendChat() {
     }
 
     // Pesan berhasil dikirim
-    renderChat(message, new Date(), true);
+    renderChat(message, new Date(), true, userId);
 
   } catch (error) {
     console.error("Error sending chat:", error);

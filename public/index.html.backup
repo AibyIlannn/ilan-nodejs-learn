@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <!-- BASIC META -->
+  <meta name="google-site-verification" content="MzzMVRhBVR5uFtLWx-CyxoINLWKSUdus2o_215vtla4" />
+  <meta name="google-adsense-account" content="ca-pub-4581455889537997">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO PRIMARY -->
+  <title>Learning Platform Web Development | Ilan Al Iman</title>
+  <meta name="description" content="Platform pembelajaran web development modern menggunakan Node.js, PostgreSQL, dan Vercel. Open source learning by Ilan Al Iman.">
+  <meta name="keywords" content="web development, node.js, postgresql, vercel, belajar backend, ilan al iman">
+  <meta name="author" content="Ilan Al Iman">
+  <meta name="robots" content="index, follow">
+
+  <!-- CANONICAL -->
+  <link rel="canonical" href="https://ilan-nodejs-learn.vercel.app/">
+
+  <!-- FAVICON -->
+  <link rel="icon" href="/favicon.jpg" type="image/jpeg">
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="Learning Platform Web Development | Ilan Al Iman">
+  <meta property="og:description" content="Belajar Node.js, PostgreSQL, dan deployment modern dengan Vercel.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ilan-nodejs-learn.vercel.app/">
+  <meta property="og:image" content="https://ilan-nodejs-learn.vercel.app/favicon.jpg">
+
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Learning Platform Web Development | Ilan Al Iman">
+  <meta name="twitter:description" content="Platform belajar backend & full-stack modern.">
+  <meta name="twitter:image" content="https://ilan-nodejs-learn.vercel.app/favicon.jpg">
+
+  <!-- STRUCTURED DATA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Ilan Learning",
+    "url": "https://ilan-nodejs-learn.vercel.app",
+    "logo": "https://ilan-nodejs-learn.vercel.app/favicon.jpg",
+    "founder": {
+      "@type": "Person",
+      "name": "Ilan Al Iman"
+    },
+    "description": "Platform pembelajaran web development menggunakan Node.js, PostgreSQL, dan Vercel.",
+    "sameAs": [
+      "https://github.com/AibyIlannn"
+    ]
+  }
+  </script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts - Crimson Text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2C3E50;
+      --secondary: #ECF0F1;
+      --accent: #3498DB;
+      --text: #34495E;
+    }
+
+    body {
+      font-family: 'Crimson Text', serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--secondary);
+    }
+
+    /* Desktop Navigation */
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 1.5rem;
+    }
+        
+    .logo h2 {
+      font-size: 1.5rem;
+      color: var(--secondary);
+      margin-top:20px;
+    }
+
+    nav h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Mobile Aside Navigation */
+    .mobile-aside {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background-color: var(--primary);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .mobile-aside.active {
+      left: 0;
+    }
+
+    .aside-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .aside-header h2 {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .mobile-aside ul {
+      list-style: none;
+      padding: 1rem 0;
+    }
+
+    .mobile-aside li {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .mobile-aside a:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .mobile-aside a i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      max-width: 800px;
+      font-size: 1.1rem;
+    }
+
+    a.link {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: border-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    a.link:hover {
+      border-bottom-color: var(--primary);
+    }
+
+    /* DOCUMENTATION SECTION */
+    #documentation {
+      margin-bottom: 4rem;
+    }
+
+    .doc-gallery {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(3, 200px);
+      gap: 0.75rem;
+      height: 600px;
+    }
+
+    .doc-gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #ddd;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0.3s ease;
+    }
+
+    .doc-gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    /* Asymmetric Masonry Layout */
+    .doc-gallery-item:nth-child(1) {
+      grid-column: 1 / 4;
+      grid-row: 1 / 3;
+    }
+
+    .doc-gallery-item:nth-child(2) {
+      grid-column: 4 / 6;
+      grid-row: 1 / 2;
+    }
+
+    .doc-gallery-item:nth-child(3) {
+      grid-column: 6 / 7;
+      grid-row: 1 / 3;
+    }
+
+    .doc-gallery-item:nth-child(4) {
+      grid-column: 4 / 6;
+      grid-row: 2 / 3;
+    }
+
+    .doc-gallery-item:nth-child(5) {
+      grid-column: 1 / 3;
+      grid-row: 3 / 4;
+    }
+
+    .doc-gallery-item:nth-child(6) {
+      grid-column: 3 / 5;
+      grid-row: 3 / 4;
+    }
+
+    .doc-gallery-item:nth-child(7) {
+      grid-column: 5 / 7;
+      grid-row: 3 / 4;
+    }
+
+    .doc-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+      filter: brightness(0.95);
+    }
+
+    .doc-gallery-item:hover img {
+      transform: scale(1.1);
+      filter: brightness(1);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.95);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+      z-index: 2001;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* CONTENT GRID */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .grid-left {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .grid-left:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .grid-right {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-item {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .grid-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .grid-item p, .grid-left p {
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    /* CHAT */
+    .chat-container {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .chat-section {
+      height: 400px;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chat {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      word-wrap: break-word;
+    }
+
+    .chat.user {
+      background: var(--accent);
+      color: white;
+      margin-left: auto;
+      text-align: right;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat.other {
+      background: var(--secondary);
+      color: var(--text);
+      margin-right: auto;
+      text-align: left;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-time {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--secondary);
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-family: 'Crimson Text', serif;
+      transition: border-color 0.3s ease;
+      cursor: text;
+    }
+
+    .chat-input input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .chat-input button {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      font-family: 'Crimson Text', serif;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-input button:hover {
+      background-color: var(--primary);
+      transform: scale(1.02);
+    }
+
+    .chat-input button:active {
+      transform: scale(0.98);
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--primary);
+      color: white;
+      margin-top: 3rem;
+      padding: 3rem 2rem 1.5rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-section h4 {
+      color: white;
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-section p {
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      color: rgba(255,255,255,0.9);
+      max-width: 100%;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      font-size: 1.2rem;
+    }
+
+    .social-links a:hover {
+      background-color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul li a {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-size: 1.05rem;
+      transition: color 0.3s ease, padding-left 0.3s ease;
+      display: inline-block;
+    }
+
+    .footer-section ul li a:hover {
+      color: var(--accent);
+      padding-left: 0.5rem;
+    }
+
+    .footer-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin: 2rem 0 1.5rem;
+    }
+
+    .footer-copyright {
+      text-align: center;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .footer-copyright a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-copyright a:hover {
+      color: white;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        font-size: 1.9rem;
+      }
+
+      h3 {
+        font-size: 1.6rem;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+
+      /* Documentation Gallery Mobile */
+      .doc-gallery {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 100px);
+        height: 400px;
+        gap: 0.5rem;
+      }
+
+      .doc-gallery-item:nth-child(1) {
+        grid-column: 1 / 3;
+        grid-row: 1 / 3;
+      }
+
+      .doc-gallery-item:nth-child(2) {
+        grid-column: 3 / 5;
+        grid-row: 1 / 2;
+      }
+
+      .doc-gallery-item:nth-child(3) {
+        grid-column: 3 / 5;
+        grid-row: 2 / 3;
+      }
+
+      .doc-gallery-item:nth-child(4) {
+        grid-column: 1 / 3;
+        grid-row: 3 / 4;
+      }
+
+      .doc-gallery-item:nth-child(5) {
+        grid-column: 3 / 5;
+        grid-row: 3 / 4;
+      }
+
+      .doc-gallery-item:nth-child(6) {
+        grid-column: 1 / 3;
+        grid-row: 4 / 5;
+      }
+
+      .doc-gallery-item:nth-child(7) {
+        grid-column: 3 / 5;
+        grid-row: 4 / 5;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-right {
+        grid-template-rows: auto auto;
+      }
+
+      .chat {
+        max-width: 85%;
+      }
+
+      .chat-section {
+        height: 300px;
+      }
+
+      .chat-input {
+        padding: 1rem;
+      }
+
+      .chat-input button {
+        padding: 0.75rem 1rem;
+      }
+
+      /* Footer Mobile */
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.9rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+      }
+
+      main {
+        padding: 1rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .chat-input input {
+        font-size: 1rem;
+      }
+
+      .chat-input button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Overlay -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- Mobile Aside Navigation -->
+  <aside class="mobile-aside" id="mobileAside">
+    <div class="aside-header">
+      <h2><i class="fas fa-graduation-cap"></i> Ilan Learning</h2>
+      <button class="close-btn" onclick="closeMenu()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul>
+      <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="/article"><i class="fas fa-newspaper"></i> Article</a></li>
+      <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </aside>
+
+  <!-- Desktop Header -->
+  <header>
+    <nav>
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h2>Ilan Learning</h2>
+      </div>
+      <button class="menu-toggle" onclick="openMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul>
+        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/about"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/article"><i class="fas fa-newspaper"></i> Article</a></li>
+        <li><a href="/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero">
+      <h1>Platform Pembelajaran Web Development Modern</h1>
+      <p>
+        Selamat datang di platform pembelajaran Ilan Al Iman. Website ini dibangun menggunakan 
+        teknologi modern seperti Node.js, Express, PostgreSQL, dan di-deploy melalui Vercel.
+      </p>
+      <p>
+        Proyek ini merupakan <strong>bagian dari pembelajaran full-stack web development</strong> dengan fokus 
+        pada arsitektur backend yang scalable dan database relasional. Semua source code tersedia 
+        secara open source di <br>
+        <a href="https://github.com/AibyIlannn/ilan-nodejs-learn" target="_blank" rel="noopener noreferrer" class="link">
+          <i class="fab fa-github"></i> GitHub Repository
+        </a>.
+      </p>
+    </section>
+
+    <!-- DOCUMENTATION SECTION -->
+    <section id="documentation" x-data="{ lightbox: false, currentImg: '' }">
+      <h2><i class="fas fa-book"></i> Dokumentasi Visual</h2>
+
+      <div class="doc-gallery">
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800" alt="Web Development">
+        </div>
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800'">
+          <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800" alt="Code Editor">
+        </div>
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800'">
+          <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800" alt="Technology">
+        </div>
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800'">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800" alt="Tech Workspace">
+        </div>
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800'">
+          <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800" alt="Laptop Coding">
+        </div>
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800'">
+          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800" alt="Programming">
+        </div>
+        <div class="doc-gallery-item" @click="lightbox = true; currentImg = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800'">
+          <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800" alt="Code Terminal">
+        </div>
+      </div>
+
+      <!-- Lightbox -->
+      <div class="lightbox" :class="{ 'active': lightbox }" @click="lightbox = false">
+        <button class="lightbox-close" @click.stop="lightbox = false">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="lightbox-content" @click.stop>
+          <img :src="currentImg" alt="Preview">
+        </div>
+      </div>
+    </section>
+
+    <section id="content">
+      <h3>Fitur Pembelajaran</h3>
+      <article class="content-grid">
+        <div class="grid-left">
+          <h4><i class="fas fa-server"></i> Backend Architecture</h4>
+          <p>Memahami struktur backend dengan Node.js dan Express untuk membangun REST API yang efisien dan terstruktur.</p>
+        </div>
+        <div class="grid-right">
+          <div class="grid-item">
+            <h4><i class="fas fa-database"></i> Database Management</h4>
+            <p>Implementasi PostgreSQL untuk mengelola data secara relasional dengan query optimization dan indexing.</p>
+          </div>
+          <div class="grid-item">
+            <h4><i class="fas fa-rocket"></i> Deployment Strategy</h4>
+            <p>Mempelajari cara deploy aplikasi Node.js ke Vercel dengan konfigurasi yang tepat untuk production environment.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="chat">
+      <h3><i class="fas fa-comments"></i> Real-Time Chat Demo</h3>
+      <p>Fitur chat sederhana yang terintegrasi dengan database PostgreSQL untuk menyimpan riwayat percakapan.</p>
+      
+      <div class="chat-container">
+        <div class="chat-section" id="chatBox">
+          <div class="chat other">
+            <div>Selamat datang di platform pembelajaran</div>
+            <div class="chat-time">10:00</div>
+          </div>
+          <div class="chat user">
+            <div>Terima kasih</div>
+            <div class="chat-time">10:01</div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input onclick="alert('Kami sedang memperbaiki fitur chat agar lebih cepat dan stabil. Mohon tunggu sebentar ya 🙏');window.location = '/'" type="text" id="chatInput" placeholder="Ketik pesan Anda..." />
+          <button onclick="sendChat()">
+            <i class="fas fa-paper-plane"></i> Kirim
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <!-- Utama Section -->
+      <div class="footer-section">
+        <h3><i class="fas fa-graduation-cap"></i> Ilan Learning</h3>
+        <p>Platform pembelajaran web development modern dengan fokus pada Node.js, PostgreSQL, dan deployment production-ready.</p>
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://wa.me/62895386692667" target="_blank" rel="noopener noreferrer" title="Whatsapp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="https://linkedin.com/ilanaliman" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://instagram.com/ilanaliman.js" target="_blank" rel="noopener noreferrer" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Menu Section -->
+      <div class="footer-section">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/article">Article</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Blog Section -->
+      <div class="footer-section">
+        <h4>Blog</h4>
+        <ul>
+          <li><a href="/article/getting-started-nodejs">Getting Started with Node.js</a></li>
+          <li><a href="/article/postgresql-best-practices">PostgreSQL Best Practices</a></li>
+          <li><a href="/article/vercel-deployment-guide">Vercel Deployment Guide</a></li>
+          <li><a href="/article/fullstack-architecture">Full-Stack Architecture</a></li>
+          <li><a href="/article" style="font-weight: 600; color: var(--accent);">More Articles →</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-copyright">
+      <p>© 2026 Developed by Ilan Al Iman, Powered by <a href="https://github.com/AibyIlannn" target="_blank" rel="noopener noreferrer">Devilann</a></p>
+    </div>
+  </footer>
+  
+  <script src="src/js/index.js"></script>
+
+</body>
+</html>
