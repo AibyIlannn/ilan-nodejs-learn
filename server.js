@@ -301,6 +301,14 @@ app.get("/db-test", async (req, res) => {
   }
 });
 
+app.get('/api/health-check', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 app.get("/api/page-views", async (req, res) => {
   const data = await sql`
     SELECT * FROM page_views
